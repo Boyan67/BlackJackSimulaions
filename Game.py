@@ -3,16 +3,9 @@ from Deck import Deck
 from no_bust_strategy import no_bust_strategy
 from strategy import basic_strategy
 
-# strategy = ["basic", "never_bust", "mimic_dealer"]
-# num_decks = [1, 2, 6, 8]
-# s17_h17 = ["S17", "H17"]
-# penetration = [0.25, 0.50, 0.75]
-# betting_size = ["r", "t", "t*2", "t+1", "t-1"]
-# card_counting = ["Hi-Lo", "Zen", "KISS", "Hi-Opt 2", "new_method"]
-
 
 class Game:
-    def __init__(self, strategy, game_type, num_decks, penetration, bet_size, card_counting):
+    def __init__(self, strategy, num_decks, game_type, penetration, bet_size, card_counting):
         self.deck = Deck(num_decks)
         self.computer = Computer()
         self.player_wins = 0
@@ -98,6 +91,34 @@ class Game:
                 return 100
             elif 1 < self.true_count <= 15:
                 return 100 * self.true_count
+            else:
+                return 100 * 15
+        elif self.bet_size == "running":
+            if self.running_count <= 1:
+                return 100
+            elif 1 < self.running_count <= 15:
+                return 100 * self.running_count
+            else:
+                return 100 * 15
+        elif self.bet_size == "true*2":
+            if self.true_count * 2 <= 1:
+                return 100
+            elif 1 < self.true_count * 2 <= 15:
+                return 100 * (self.true_count * 2)
+            else:
+                return 100 * 15
+        elif self.bet_size == "true+2":
+            if self.true_count + 2 <= 1:
+                return 100
+            elif 1 < self.true_count + 2 <= 15:
+                return 100 * (self.true_count + 2)
+            else:
+                return 100 * 15
+        elif self.bet_size == "true-2":
+            if self.true_count - 2 <= 1:
+                return 100
+            elif 1 < self.true_count - 2 <= 15:
+                return 100 * (self.true_count - 2)
             else:
                 return 100 * 15
         else:

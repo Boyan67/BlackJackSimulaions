@@ -15,21 +15,3 @@ for a in strategy:
                         all.append(f"{a} - {b} - {c} - {d} - {e} - {f}")
 
 print(len(all))
-
-card_counting_method = {
-  "2": 1,
-  "3": 1,
-  "4": 1,
-  "5": 1,
-  "6": 1,
-  "7": 0,
-  "8": 0,
-  "9": 0,
-  "10": -1,
-  "Jack": -1,
-  "Queen": -1,
-  "King": -1,
-  "Ace": -1,
-}
-
-print(card_counting_method["2"])

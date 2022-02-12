@@ -1,3 +1,5 @@
+# Strategy from:
+# https://wizardofodds.com/games/no-bust-21/
 pair_splitting = [['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'H'],  # A,A
                   ['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # 10,10
                   ['Y', 'Y', 'Y', 'Y', 'Y', 'S', 'Y', 'Y', 'S', 'S'],  # 9,9
@@ -12,21 +14,21 @@ pair_splitting = [['Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'H'],  # A,A
 soft_total = [['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # Soft 20
               ['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # Soft 19
               ['H', 'D', 'D', 'D', 'D', 'S', 'H', 'H', 'H', 'H'],  # Soft 18
-              ['H', 'D', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 17
-              ['H', 'H', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 16
-              ['H', 'H', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 15
-              ['H', 'H', 'H', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 14
-              ['H', 'H', 'H', 'D', 'D', 'H', 'H', 'H', 'H', 'H']]  # Soft 13
+              ['H', 'H', 'H', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 17
+              ['H', 'H', 'H', 'H', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 16
+              ['H', 'H', 'H', 'H', 'D', 'H', 'H', 'H', 'H', 'H'],  # Soft 15
+              ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Soft 14
+              ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H']]  # Soft 13
 
-hard_total = [['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # Hard 17
+hard_total = [['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'H'],  # Hard 17
               ['S', 'S', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 16
               ['S', 'S', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 15
-              ['S', 'S', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 14
-              ['S', 'S', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 13
-              ['H', 'H', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 12
-              ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'D', 'D', 'D'],  # Hard 11
-              ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H'],  # Hard 10
-              ['H', 'D', 'D', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Hard 9
+              ['H', 'H', 'S', 'S', 'S', 'H', 'H', 'H', 'H', 'H'],  # Hard 14
+              ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 13
+              ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 12
+              ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H'],  # Hard 11
+              ['D', 'D', 'D', 'D', 'D', 'D', 'D', 'H', 'H', 'H'],  # Hard 10
+              ['H', 'H', 'H', 'D', 'D', 'H', 'H', 'H', 'H', 'H'],  # Hard 9
               ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 8
               ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 7
               ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 6
