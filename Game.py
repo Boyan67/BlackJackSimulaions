@@ -1,6 +1,6 @@
 from Computer import Computer
 from Deck import Deck
-from no_bust_strategy import no_bust_strategy
+from no_bust_strategy import no_bust_strategy, mimic_dealer
 from strategy import basic_strategy
 
 
@@ -11,7 +11,7 @@ class Game:
         self.player_wins = 0
         self.computer_wins = 0
         self.ties = 0
-        self.rounds = 0
+        self.rounds = 1
         self.total_bets = 0
         self.num_decks = num_decks
         self.bj_pays = 1.5
@@ -39,39 +39,35 @@ class Game:
         if hand.total > 21:
             player.bank -= hand.bet
             self.computer_wins += 1
-            # 'Player Bust'
         elif self.computer.hand.total > 21:
             self.player_wins += 1
             if hand.total == 21:
                 player.bank += hand.bet * self.bj_pays
-                # 'Player Blackjack!'
             else:
                 player.bank += hand.bet
-            # 'Dealer Bust'
         elif hand.total == self.computer.hand.total:
             self.ties += 1
-            # 'Push'
         elif hand.total == 21:
             if len(hand.cards) == 2:
                 self.player_wins += 1
                 player.bank += hand.bet * self.bj_pays
-                # 'Player Blackjack!'
             else:
                 self.player_wins += 1
                 player.bank += hand.bet
-                # 'Player Wins'
         elif self.computer.hand.total > hand.total:
             player.bank -= hand.bet
             self.computer_wins += 1
-            # 'Player Loss'
         else:
             player.bank += hand.bet
             self.player_wins += 1
-            # 'Player Win'
 
     def penetration(self):
-        if self.num_decks == 1:
-            return 22
+        if self.num_decks == 1 and self.cut == 0.75:
+            return 18
+        elif self.num_decks == 1 and self.cut == 0.9:
+            return 15
+        elif self.num_decks == 2 and self.cut == 0.9:
+            return 19
         else:
             return (self.num_decks * 52) * (1 - self.cut)
 
@@ -126,10 +122,12 @@ class Game:
 
     def play_basic_strategy(self, hand, up, deck, das):
         while not hand.bust:
-            if self.strategy == "no_bust":
+            if self.strategy == "never_bust":
                 turn = no_bust_strategy(hand, up, das)
+            elif self.strategy == "mimic_dealer":
+                turn = mimic_dealer(hand)
             else:
-                turn = basic_strategy(hand, up, das)
+                turn = basic_strategy(hand, up, das, self.true_count)
             hands = []
             new_hand = 0
             if turn == "Y" and not hand.already_split:
@@ -163,7 +161,6 @@ class Game:
         self.computer_turn(self.computer, self.deck)
 
         for hand in h:
-            self.rounds += 1
             self.bet_history.append(hand.bet)
             self.total_bets += hand.bet
             self.check_win(hand, player)
@@ -172,15 +169,18 @@ class Game:
         self.computer.reset_hand()
 
     def play_game(self, player, rounds_limit):
+        stack = [10000]
         player.bank = 10000
-        while self.rounds < rounds_limit:
+        while self.rounds <= rounds_limit:
             self.deck = Deck(self.num_decks)
             self.deck.shuffle()
             self.running_count = 0
             self.true_count = 0
             while len(self.deck.cards) > self.penetration():
                 self.play_round(player)
+                self.rounds += 1
+                stack.append(player.bank)
                 self.true_count = round((self.running_count / self.deck.size()) * 2) / 2
-                if self.rounds == rounds_limit:
+                if self.rounds > rounds_limit:
                     break
-        return player.bank, self.total_bets, self.player_wins, self.ties, self.computer_wins, self.bet_history
+        return player.bank, self.total_bets, self.player_wins, self.ties, self.computer_wins, self.bet_history, stack

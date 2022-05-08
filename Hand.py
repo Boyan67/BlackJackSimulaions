@@ -48,7 +48,6 @@ class Hand:
             self.bust = True
         else:
             self.total += drawn_card.value
-
         self.check_blackjack()
         return drawn_card
 
