@@ -172,7 +172,7 @@ t0 = time.time()
 # betting_size = ["running", "true", "true*2", "true+2", "true-2"]
 while k < 10000:
     k += 1
-    game = Game('basic', 8, 'S17', .8, 'true', hi_lo)
+    game = Game('basic', 6, 'S17', .75, 'true', revere_RAPC)
     game_result = game.play_game(player, 100)
     stack.append(game_result[-1])
     writer.writerow(game_result[-1])
