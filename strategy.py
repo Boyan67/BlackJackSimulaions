@@ -33,7 +33,8 @@ hard_total = [['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # Hard 17
               ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'],  # Hard 5
               ['H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H']]  # Hard 4
 
-def basic_strategy(hand, up_card, das, a):
+
+def basic_strategy(hand, up_card, das):
     card1 = hand.cards[0].value
     card2 = hand.cards[1].value
 

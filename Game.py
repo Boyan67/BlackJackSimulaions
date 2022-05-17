@@ -6,6 +6,15 @@ from strategy import basic_strategy
 
 class Game:
     def __init__(self, strategy, num_decks, game_type, penetration, bet_size, card_counting):
+        """
+        Initialises the game class with all the simulation conditions.
+        :param str strategy: specify one of mimic_dealer, never_bust or basic
+        :param int num_decks: the number of decks for this game
+        :param str game_type: S17 or H17
+        :param double penetration: percentage of the deck is to be played (decimal between 0 and 1)
+        :param str bet_size: what betting size to be used (i.e. true)
+        :param dict card_counting: the card counting method to be used
+        """
         self.deck = Deck(num_decks)
         self.computer = Computer()
         self.player_wins = 0
@@ -27,15 +36,28 @@ class Game:
         self.strategy = strategy
 
     def update_running_count(self, card):
+        """
+        Updates the running count
+        :param card: a card object
+        """
         val = self.card_counting[card.rank]
         self.running_count += val
 
     def deal_cards(self, player):
+        """
+        Deals the player two cards and the dealer one card
+        :param player: a player object
+        """
         self.update_running_count(player.hand.draw(self.deck))
         self.update_running_count(self.computer.hand.draw(self.deck))
         self.update_running_count(player.hand.draw(self.deck))
 
     def check_win(self, hand, player):
+        """
+        Checks who won the round and updates the player bank accordingly
+        :param hand: stores the player's cards
+        :param player: the player to which the hand is connected to
+        """
         if hand.total > 21:
             player.bank -= hand.bet
             self.computer_wins += 1
@@ -82,6 +104,10 @@ class Game:
                 self.update_running_count(computer.hand.draw(deck))
 
     def decide_bet(self):
+        """
+        Decides how much to bet based on the true count and the betting system specified
+        :return: the amount to bet
+        """
         if self.bet_size == "true":
             if self.true_count <= 1:
                 return 100
@@ -127,7 +153,7 @@ class Game:
             elif self.strategy == "mimic_dealer":
                 turn = mimic_dealer(hand)
             else:
-                turn = basic_strategy(hand, up, das, self.true_count)
+                turn = basic_strategy(hand, up, das)
             hands = []
             new_hand = 0
             if turn == "Y" and not hand.already_split:
@@ -169,6 +195,16 @@ class Game:
         self.computer.reset_hand()
 
     def play_game(self, player, rounds_limit):
+        """
+        Plays blackjack for the number of rounds specified and the simulation attributes specified in the Game instance
+        :param player: a Player object
+        :param rounds_limit: number of blackjack rounds to be played
+
+        :return: a list of relevant results:
+                    [final player money, total number of bets, number of wins for the player, number of ties,
+                    computer wins, betting history, list of player's bankroll throughout each round.]
+
+        """
         stack = [10000]
         player.bank = 10000
         while self.rounds <= rounds_limit:

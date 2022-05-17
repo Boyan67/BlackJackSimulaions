@@ -1,5 +1,4 @@
 from Hand import Hand
-from strategy import basic_strategy
 
 
 class Player:

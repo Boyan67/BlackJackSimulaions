@@ -6,6 +6,7 @@ def no_bust_strategy(hand, up_card, das):
         choice = "H"
     return choice
 
+
 def mimic_dealer(hand):
     choice = ""
     if hand.total < 17:
