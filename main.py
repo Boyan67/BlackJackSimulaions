@@ -9,15 +9,9 @@ import scipy.stats as st
 import statistics as stat
 
 random.seed(25)
-final_player_stack = []
-final_bet_history = []
-total_bets = []
-total_player_win = 0
-total_ties = 0
-total_computer_win = 0
 
 
-def output_report(player_stack):
+def output_report(player_stack, final_bet_history, total_bets, total_player_win, total_ties, total_computer_win):
     """
     Calculates and returns information for the simulation results
     :param player_stack: list of the player's bankroll after each round
@@ -67,75 +61,95 @@ revere_RAPC = {
 no_card_counting = {
     "name": "no_card_counting", "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0,
     "Jack": 0, "Queen": 0, "King": 0, "Ace": 0}
-decimal_counting2 = {
+decimal_counting = {
     "name": "decimal_counting", "2": 3.8, "3": 4.6, "4": 6.1, "5": 8, "6": 4.6, "7": 2.9, "8": -0.1,
     "9": -2, "10": -4.9, "Jack": -4.9, "Queen": -4.9, "King": -4.9, "Ace": -5.8}
 practical = {"name": "practical", '2': 1, '3': 1, '4': 2, '5': 2, '6': 1, '7': 1, '8': 0, '9': -1, '10': -1, 'Jack': -1,
              'Queen': -1, 'King': -1, 'Ace': -2}
 
+
 # Simulation Settings
-player = Player("Jim")
-f = open('bankroll/practical.csv', 'w')
-strategy = ["basic"]
-num_decks = [1, 2, 6, 8]
-s17_h17 = ["S17"]
-penetration = [.25, .5, .75, 0.90]
-betting_size = ["running", "true", "true*2", "true+2", "true-2"]
-card_counting = [practical]
+# strategy = ["basic"]
+# num_decks = [1, 2, 6, 8]
+# s17_h17 = ["S17"]
+# penetration = [.25, .5, .75, 0.90]
+# betting_size = ["running", "true", "true*2", "true+2", "true-2"]
+# card_counting = [practical]
 
 # Code to simulate under all simulation settings for 10,000 games of 100 hands each.
-writer = csv.writer(f)
-count = 0
-for a in strategy:
-    for b in num_decks:
-        for c in s17_h17:
-            for d in penetration:
-                for e in betting_size:
-                    for f in card_counting:
-                        t0 = time.time()
-                        count += 1
-                        final_player_stack = []
-                        total_bets = []
-                        total_player_win = 0
-                        total_ties = 0
-                        total_computer_win = 0
-                        k = 1
-                        while k < 10000:
-                            k += 1
-                            game = Game(a, b, c, d, e, f)
-                            game_result = game.play_game(player, 100)
-                            final_player_stack.append(game_result[0])
-                            total_bets.append(game_result[1])
-                            total_player_win += game_result[2]
-                            total_ties += game_result[3]
-                            total_computer_win += game_result[4]
-                            final_bet_history += game_result[5]
-                        t1 = time.time()
-                        print(f"Time: {t1 - t0}")
-                        print(count)
-                        sim_variables = [a, b, c, d, e, f['name']]
-                        analysis = output_report(final_player_stack)
-                        row = sim_variables + analysis
-                        writer.writerow(row)
+def multiple_conditions(filename, strategy, num_decks, s17_h17, penetration, betting_size, card_counting):
+    """
+    Runs 10,000 hands under a number of conditions you specify in arrays and stores many relevant statistics to a csv file.
+    :param filename: Name of csv file to save results
+    :param strategy: List of strategies from: ['basic', 'mimic_dealer', 'never_bust']
+    :param num_decks: List of different numbers (any number) of decks to perform simulations. e.g.([2, 4, 6])
+    :param s17_h17: List of either S17, H17 or both. e.g.(['S17', 'H17'])
+    :param penetration: List of percentages of the shoe to be played before shuffling. e.g. (0.90)
+    :param betting_size: List of betting systems. Available options (["running", "true", "true*2", "true+2", "true-2"])
+    :param card_counting: List of card counting methods defined as dictionaries. Pre-defined card counting methods:
+    [hi_lo, zen, kiss, hi-opt2, revereRAPC, wongHalves, no_card_counting, decimal_counting, practical_counting]
+    """
+    final_bet_history = []
+    player = Player("Jim")
+    f = open(f'bankroll/{filename}.csv', 'w')
+    writer = csv.writer(f)
+    count = 0
+    for a in strategy:
+        for b in num_decks:
+            for c in s17_h17:
+                for d in penetration:
+                    for e in betting_size:
+                        for f in card_counting:
+                            t0 = time.time()
+                            count += 1
+                            final_player_stack = []
+                            total_bets = []
+                            total_player_win = 0
+                            total_ties = 0
+                            total_computer_win = 0
+                            k = 1
+                            while k < 10000:
+                                k += 1
+                                game = Game(a, b, c, d, e, f)
+                                game_result = game.play_game(player, 100)
+                                final_player_stack.append(game_result[0])
+                                total_bets.append(game_result[1])
+                                total_player_win += game_result[2]
+                                total_ties += game_result[3]
+                                total_computer_win += game_result[4]
+                                final_bet_history += game_result[5]
+                            t1 = time.time()
+                            print(f"Time: {t1 - t0}")
+                            print(count)
+                            sim_variables = [a, b, c, d, e, f['name']]
+                            analysis = output_report(final_player_stack, final_bet_history, total_bets,
+                                                     total_player_win, total_ties, total_computer_win)
+                            row = sim_variables + analysis
+                            writer.writerow(row)
 
 
-def single_simulation():
+def single_simulation(filename, strategy, num_decks, s17_h17, penetration, bet_size, counting_method):
     """
     Simulates a single simulation under specified conditions and creates
     a csv file with the player bankroll at each round.
     """
-    file = open('bankroll/TEST.csv', 'w')
+    final_player_stack = []
+    player = Player("A")
+    file = open(f'bankroll/{filename}.csv', 'w')
     stack = []
     w = csv.writer(file)
     i = 0
 
     while i < 10000:
         i += 1
-        game_set = Game('basic', 6, 'S17', .75, 'true-2', revere_RAPC)
+        # game_set = Game('basic', 6, 'S17', .75, 'true-2', revere_RAPC)
+        game_set = Game(strategy, num_decks, s17_h17, penetration, bet_size, counting_method)
         result = game_set.play_game(player, 100)
         stack.append(result[-1])
         w.writerow(result[-1])
         final_player_stack.append(result[0])
 
 
-single_simulation()
+# single_simulation('TestFile', 'basic', 6, 'S17', .75, 'true*2', revere_RAPC)
+
+print(multiple_conditions.__doc__)
