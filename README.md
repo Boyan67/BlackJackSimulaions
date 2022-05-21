@@ -18,12 +18,18 @@ Within the main file there are two main functions that can be used to reproduce 
 single_simulation() - Runs 10,000 hands under a set of conditions you specify and records the bankroll of the player in a csv file at after each round.
 ```python
 single_simulation('TestFile', 'basic', 6, 'S17', .75, 'true*2', revere_RAPC)
+#For a more detailed description of the function use:
+print(single_simulation.__doc__)
 ```
 
 multiple_conditions() - Runs 10,000 hands under a number of conditions you specify in arrays and stores many relevant statistics to a csv file.
 ```python
-single_simulation('TestFile', 'basic', 6, 'S17', .75, 'true*2', revere_RAPC)
+multiple_conditions(filename, strategy, num_decks, s17_h17, penetration, betting_size, card_counting)
+
+#For a more detailed description of the function use:
+print(multiple_conditions.__doc__)
 ```
+
 
 ## Supplementary Material
 
