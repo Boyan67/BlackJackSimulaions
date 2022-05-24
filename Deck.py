@@ -4,6 +4,10 @@ import random
 
 class Deck:
     def __init__(self, size):
+        """
+        Creates a new shoe with the number of decks specified
+        :param size: how many decks should be used
+        """
         self.cards = []
         self.build(size)
 
@@ -11,6 +15,7 @@ class Deck:
         for i in range(size):
             self.build_deck()
 
+    # Builds all 52 cards within a single deck
     def build_deck(self):
         for s in ["Spades", "Clubs", "Diamonds", "Hearts"]:
             for r in ["2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"]:

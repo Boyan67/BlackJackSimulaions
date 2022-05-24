@@ -147,6 +147,14 @@ class Game:
             return 100
 
     def play_basic_strategy(self, hand, up, deck, das):
+        """
+        Picks out what strategy has been set to be used and plays the game to that strategy
+        :param hand: the hand which to play basic strategy with
+        :param up: the up card of the dealer
+        :param deck: the deck that the cards are being delt from
+        :param das: double after split allowed or not
+        :return: The hands after the player has played all of their turns
+        """
         while not hand.bust:
             if self.strategy == "never_bust":
                 turn = no_bust_strategy(hand, up, das)
@@ -179,6 +187,11 @@ class Game:
             return hands
 
     def play_round(self, player):
+        """
+        Plays the round: deals player's cards, deals computer's cards,
+        plays all the player's turns and updates running count
+        :param player: the player object
+        """
         self.deal_cards(player)
         up = self.computer.hand.draw(self.deck)
         self.update_running_count(up)

@@ -132,6 +132,14 @@ def single_simulation(filename, strategy, num_decks, s17_h17, penetration, bet_s
     """
     Simulates a single simulation under specified conditions and creates
     a csv file with the player bankroll at each round.
+    :param filename: a string with the name of the file for the results to be stored in
+    :param strategy: a string with what strategy to use: 'basic', 'mimic_dealer', 'never_bust'
+    :param num_decks: number of decks for the game to be played with
+    :param s17_h17: either S17 or H17 to be used as the game type
+    :param penetration: percentages of the shoe to be played before shuffling. e.g. (0.90)
+    :param bet_size: betting system from available options (["running", "true", "true*2", "true+2", "true-2"])
+    :param counting_method: a single card counting method defined as a dictionary. Pre-defined card counting methods:
+    [hi_lo, zen, kiss, hi-opt2, revereRAPC, wongHalves, no_card_counting, decimal_counting, practical_counting]
     """
     final_player_stack = []
     player = Player("A")
