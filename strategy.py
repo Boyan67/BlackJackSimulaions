@@ -35,6 +35,13 @@ hard_total = [['S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S', 'S'],  # Hard 17
 
 
 def basic_strategy(hand, up_card, das):
+    """
+    Outlines all the rules for basic strategy using the 2d lists above
+    :param hand: The hand to play the basic strategy for
+    :param up_card: dealer's visible card
+    :param das: double after split
+    :return: the choice of the player: Split, Hit, Double or Stand
+    """
     card1 = hand.cards[0].value
     card2 = hand.cards[1].value
 
